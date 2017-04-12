@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@bitbucket.org:kehang/kh-helpers.git
+	branch = master
+	commit = 4bdfcad0bc95726495e96faa4008a5f36124386f
+	parent = 430dc59576104a02d6a044c0da44c09ba0bdd5aa
+	cmdver = 0.3.1
