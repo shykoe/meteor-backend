@@ -10,6 +10,7 @@
     "bcrypt": "^0.8.7",
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.14.1",
+    "sequelize": "^3.30.4",
     "yunpian-sdk": "^1.0.0",
     "yup": "^0.20.0"
   }
