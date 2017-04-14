@@ -5,14 +5,15 @@
 # but you can also edit it by hand.
 
 meteor-base@1.0.4             # Packages every Meteor app needs to have
-mongo@1.1.14                   # The database Meteor supports right now
+mongo@1.1.16                   # The database Meteor supports right now
 reactive-var@1.0.11            # Reactive variable for tracker
-tracker@1.1.1                 # Meteor's client-side reactive programming library
+tracker@1.1.2                 # Meteor's client-side reactive programming library
 
 es5-shim@4.6.15                # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.7.2              # Enable ECMAScript2015+ syntax in app code
 
-shell-server@0.2.1
+shell-server@0.2.3
 percolate:synced-cron
 kehang-accounts-password
-random
+random@1.0.10
+promise@0.8.8
