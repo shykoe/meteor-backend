@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@bitbucket.org:kehang/kh-helpers.git
 	branch = master
-	commit = 4bdfcad0bc95726495e96faa4008a5f36124386f
-	parent = 430dc59576104a02d6a044c0da44c09ba0bdd5aa
+	commit = 8a237107b220730122d3a3d16907d3038e4007de
+	parent = 5901597f49c9d436ec3752d8ff1c5c23d89ef972
 	cmdver = 0.3.1
