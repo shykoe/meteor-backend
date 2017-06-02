@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "title": "feedbacks",
+  "properties": {
+    "userId": { "type": "string" },
+    "phone": { "type": "string" },
+    "content": { "type": "string" },
+    "isProcessed": { "type": "boolean" },
+    "procNotes": { "type": "string" },
+    "createdAt": { "format": "date" }
+  },
+  "required": [ "phone", "content", "isProcessed", "createdAt" ]
+}

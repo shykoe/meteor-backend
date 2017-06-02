@@ -1,0 +1,109 @@
+{
+  "type": "object",
+  "title": "orders",
+  "properties": {
+    "userId": { "type": "string" },
+    "status": { "type": "integer", "minimum": 1, "maximum": 12 },
+    "createdAt": { "type": "integer" },
+    "sampleName": { "type": "string" },
+    "sampleProducer": { "type": "string" },
+    "producerBatch": { "type": "string" },
+    "sampleType": { "type": "string" },
+    "sampleLevel": { "type": "string" },
+    "sampleBrand": { "type": "string" },
+    "sampleNum": { "type": "string" },
+    "clientName": { "type": "string" },
+    "clientContactName": { "type": "string" },
+    "clientContactPhone": { "type": "string" },
+    "clientContactIdent": { "type": "string" },
+    "clientContactAddress": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "tel": { "type": "string" },
+        "province": { "type": "string" },
+        "city": { "type": "string" },
+        "district": { "type": "string" },
+        "street": { "type": "string" },
+        "zip": { "type": "string" }
+      },
+      "required": [ "name", "tel", "province", "city", "district", "street" ]
+    },
+    "clientEconomicType": { "type": "string" },
+    "descImages": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "reportNo": { "type": "integer", "minimum": 1 },
+    "categoryName": { "type": "string" },
+    "levelName": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "requirements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "result": { "type": "string" },
+                "verdict": { "type": "boolean" }
+              },
+              "required": [ "name" ]
+            }
+          }
+        },
+        "required": [ "name", "requirements" ]
+      }
+    },
+    "price": { "type": "number", "minimum": 0, "exclusiveMinimum": true },
+    "deadline": { "type": "integer" },
+    "notes": { "type": "string" },
+    "agentId": { "type": "string" },
+    "testerIds": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "agentMsg": { "type": "string" },
+    "keeperMsg": { "type": "string" },
+    "productShippingInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "no": { "type": "string" }
+        },
+        "required": [ "provider", "no" ]
+      }
+    },
+    "reportShippingInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string" },
+          "no": { "type": "string" }
+        },
+        "required": [ "provider", "no" ]
+      }
+    },
+    "sampleImages": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "testingImages": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "refundNotes": { "type": "string" }
+  },
+  "required": [ "userId", "status", "createdAt", "sampleName", "sampleProducer", "producerBatch",
+    "sampleType", "sampleLevel", "sampleBrand", "sampleNum", "clientName", "clientContactName",
+    "clientContactPhone", "clientContactIdent", "clientContactAddress", "clientEconomicType",
+    "descImages"
+  ]
+}
