@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@bitbucket.org:kehang/kh-dataman.git
+	branch = master
+	commit = 4815720e95335a25939165cec0d0f3f97a81d021
+	parent = 02d5ccae9829deccb16d2b4f646ad9f4ba4aab2e
+	cmdver = 0.3.1
