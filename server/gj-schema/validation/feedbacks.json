@@ -7,7 +7,7 @@
     "content": { "type": "string" },
     "isProcessed": { "type": "boolean" },
     "procNotes": { "type": "string" },
-    "createdAt": { "format": "date" }
+    "createdAt": { "type": "integer" }
   },
   "required": [ "phone", "content", "isProcessed", "createdAt" ]
 }

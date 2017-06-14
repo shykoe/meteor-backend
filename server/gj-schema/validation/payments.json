@@ -6,18 +6,11 @@
     "type": { "type": "string" },
     "method": { "type": "integer", "minimum": 1, "maximum": 1 },
     "amount": { "type": "string" },
+    "orderId": { "type": "string" },
     "paid": { "type": "boolean" },
     "tradeNo": { "type": "string" },
-    "amounts": {
-      "type": "array",
-      "items": { "type": "number" }
-    },
-    "orderIds": {
-      "type": "array",
-      "items": { "type": "string" }
-    },
-    "createdAt": { "format": "date" },
+    "createdAt": { "type": "integer" },
     "deleted": { "type": "boolean" },
   },
-  "required": [ "userId", "type", "method", "amount", "paid", "createdAt" ]
+  "required": [ "userId", "type", "method", "amount", "orderId", "paid", "createdAt" ]
 }
