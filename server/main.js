@@ -22,7 +22,7 @@ Meteor.startup(() => {
             msg.result.fields = Users.findOne({ _id: msg.result.id }, { fields: {
               phone: 1,
               username: 1,
-              level: 1,
+              role: 1,
             } });
             delete msg.result.fields._id;
           }
