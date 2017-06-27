@@ -1,4 +1,4 @@
-import Verification from '/server/gj-schema/models/verification';
+import Verification from '/server/pr-schema/models/verification';
 import { sendVerificationCode } from '/server/kh-helpers/3rd-party/sms';
 import { getRandomInt } from '/server/kh-helpers/math';
 

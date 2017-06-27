@@ -1,8 +1,8 @@
-import Consts from '/server/gj-schema/consts';
-import Feedbacks from '/server/gj-schema/models/feedbacks';
-import Users from '/server/gj-schema/models/users';
-import { schemaValidate } from '/server/gj-schema/validate';
-import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/kh-dataman/utils';
+import Consts from '/server/pr-schema/consts';
+import Feedbacks from '/server/pr-schema/models/feedbacks';
+import Users from '/server/pr-schema/models/users';
+import { schemaValidate } from '/server/pr-schema/validate';
+import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/pr-schema/dataman-utils';
 
 Meteor.methods({
   'feedbacks.create': (payload) => {

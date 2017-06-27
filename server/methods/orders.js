@@ -1,8 +1,8 @@
 import crypto from 'crypto';
-import Consts from '/server/gj-schema/consts';
-import Orders from '/server/gj-schema/models/orders';
-import Users from '/server/gj-schema/models/users';
-import Payments from '/server/gj-schema/models/payments';
+import Consts from '/server/pr-schema/consts';
+import Orders from '/server/pr-schema/models/orders';
+import Users from '/server/pr-schema/models/users';
+import Payments from '/server/pr-schema/models/payments';
 import {
   paymentDeadlineAfterApproval,
   resubmitDeadlineAfterRejection,
@@ -12,8 +12,8 @@ import {
   alipayPlatformPublicKey
 } from '/server/config';
 import { getRandomInt, round, round2 } from '/server/kh-helpers/math';
-import { schemaValidate } from '/server/gj-schema/validate';
-import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/kh-dataman/utils';
+import { schemaValidate } from '/server/pr-schema/validate';
+import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/pr-schema/dataman-utils';
 
 function generateOrderId(nowDate) {
   let rand8 = '';

@@ -1,12 +1,12 @@
 import crypto from 'crypto';
-import Consts from '/server/gj-schema/consts';
-import Users from '/server/gj-schema/models/users';
-import Verification from '/server/gj-schema/models/verification';
-import Recharges from '/server/gj-schema/models/recharges';
-import Payments from '/server/gj-schema/models/payments';
-import Orders from '/server/gj-schema/models/orders';
-import userSchema from '/server/gj-schema/validation/users';
-import { schemaValidate } from '/server/gj-schema/validate';
+import Consts from '/server/pr-schema/consts';
+import Users from '/server/pr-schema/models/users';
+import Verification from '/server/pr-schema/models/verification';
+import Recharges from '/server/pr-schema/models/recharges';
+import Payments from '/server/pr-schema/models/payments';
+import Orders from '/server/pr-schema/models/orders';
+import userSchema from '/server/pr-schema/validation/users';
+import { schemaValidate } from '/server/pr-schema/validate';
 import { getRandomInt, round2 } from '/server/kh-helpers/math';
 import {
   alipayAppId,
@@ -14,7 +14,7 @@ import {
   alipayPrivateKey,
   alipayPlatformPublicKey
 } from '/server/config';
-import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/kh-dataman/utils';
+import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/pr-schema/dataman-utils';
 
 // 可以使用`setProfileAttr`方法设置的profile attr列表
 const editableAttrs = {

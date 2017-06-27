@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import Users from '/server/gj-schema/models/users';
+import Users from '/server/pr-schema/models/users';
 
 // 只有这样才能让Meteor将这些脚本加入build bundle, 从而可以在meteor shell中调用
 // 参见: https://github.com/meteor/meteor/issues/7629#issuecomment-239196322
