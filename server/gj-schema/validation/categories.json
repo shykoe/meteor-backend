@@ -18,7 +18,7 @@
                 "requirements": {
                   "type": "array",
                   "items": { "type": "string" }
-                }
+                },
                 "standard": { "type": "string" }
               },
               "required": [ "name", "requirements", "standard" ]
@@ -27,7 +27,7 @@
         },
         "required": [ "name", "items" ]
       }
-    },
+    }
   },
   "required": [ "name", "levels" ]
 }

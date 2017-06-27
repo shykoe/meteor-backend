@@ -63,9 +63,9 @@
           "type": { "type": "integer", "minimum": 51, "maximum": 61 },
           "ts": { "type": "integer" }
         },
-        "required": [ "type", "ts"]
-        }
-      },
+        "required": [ "type", "ts" ]
+      }
+    },
     "lastMessageEnterTime": { "type": "number" },
     "receiveMsgs": { "type": "boolean" },
     "receiveInfo": { "type": "boolean" },

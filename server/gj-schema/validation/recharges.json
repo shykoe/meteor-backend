@@ -8,7 +8,7 @@
     "paid": { "type": "boolean" },
     "tradeNo": { "type": "string" },
     "createdAt": { "type": "integer" },
-    "deleted": { "type": "boolean" },
+    "deleted": { "type": "boolean" }
   },
   "required": [ "userId", "method", "amount", "paid", "createdAt" ]
 }
