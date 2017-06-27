@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@bitbucket.org:kehang/gj-schema.git
+	branch = master
+	commit = b78caa2ba997695d42d3eff323e9b76d7f8f125f
+	parent = 41c28b2bb60b729a4c30ede58359a19756ec9d28
+	cmdver = 0.3.1
