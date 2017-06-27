@@ -1,8 +1,8 @@
 import immutable from 'object-path-immutable';
 
-export const DATAMAN_CHANGE_STATUS = 'qizhe/dataman/status/CHANGE';
+export const DATAMAN_CHANGE_STATUS = 'app/dataman/status/CHANGE';
 
-export const DATAMAN_EXECUTE_TASK = 'qizhe/dataman/task/EXECUTE';
+export const DATAMAN_EXECUTE_TASK = 'app/dataman/task/EXECUTE';
 
 export const DATAMAN_STATUS_UNTRACKED = 0;
 export const DATAMAN_STATUS_PREFETCH = 1;

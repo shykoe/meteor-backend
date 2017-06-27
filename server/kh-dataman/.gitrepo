@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@bitbucket.org:kehang/kh-dataman.git
 	branch = master
-	commit = 4815720e95335a25939165cec0d0f3f97a81d021
-	parent = 02d5ccae9829deccb16d2b4f646ad9f4ba4aab2e
+	commit = b19d6f1827bb7c16d3ee76d87f13f52fd8bde047
+	parent = b32f6950a39371b7ba1409d61ec1896da6b80acc
 	cmdver = 0.3.1

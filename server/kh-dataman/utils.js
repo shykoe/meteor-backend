@@ -1,4 +1,4 @@
-import { fields, fieldSets } from 'qz-schema/dataman-consts';
+import { fields, fieldSets } from 'pr-schema/dataman-consts';
 import { arraysEqual } from 'kh-helpers';
 
 export function getDataItem(state, item) {
