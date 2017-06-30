@@ -17,9 +17,6 @@
     "sampleBrand": { "type": "string" },
     "sampleNum": { "type": "string" },
     "clientName": { "type": "string" },
-    "clientContactName": { "type": "string" },
-    "clientContactPhone": { "type": "string" },
-    "clientContactIdent": { "type": "string" },
     "clientContactAddress": {
       "type": "object",
       "properties": {
@@ -33,7 +30,10 @@
       },
       "required": [ "name", "tel", "province", "city", "district", "street" ]
     },
+    "clientContactIdent": { "type": "string" },
     "clientEconomicType": { "type": "string" },
+    "sampleDisposalType": { "type": "integer" },
+    "reportFetchingType": { "type": "integer" },
     "descImages": {
       "type": "array",
       "items": { "type": "string" }
@@ -106,8 +106,7 @@
     "refundNotes": { "type": "string" }
   },
   "required": [ "userId", "status", "createdAt", "sampleName", "sampleProducer", "producerBatch",
-    "sampleType", "sampleLevel", "sampleBrand", "sampleNum", "clientName", "clientContactName",
-    "clientContactPhone", "clientContactIdent", "clientContactAddress", "clientEconomicType",
-    "descImages"
+    "sampleType", "sampleLevel", "sampleBrand", "sampleNum", "clientName", "clientContactAddress",
+    "sampleDisposalType", "reportFetchingType", "descImages"
   ]
 }

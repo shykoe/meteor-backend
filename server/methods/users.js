@@ -857,7 +857,7 @@ Meteor.methods({
     Users.update({
       _id: currentUser._id
     }, { $push: { addr: { $each: [addrObj], $position: 0 } } });
-    generateMessage(currentUserId, Consts.USER_EXTRA_TYPE_SET_DEFAULT_ADDRESS);
+    generateMessage(currentUser._id, Consts.USER_EXTRA_TYPE_SET_DEFAULT_ADDRESS);
 
     const fsi = getIdxFromFieldSetName('users', 'user-addr');
     return Meteor.call('users.getCurrent', fsi);
