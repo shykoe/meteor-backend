@@ -15,7 +15,7 @@
     "sampleType": { "type": "string" },
     "sampleLevel": { "type": "string" },
     "sampleBrand": { "type": "string" },
-    "sampleNum": { "type": "string" },
+    "sampleNum": { "type": "integer", "minimum": 1 },
     "clientName": { "type": "string" },
     "clientContactAddress": {
       "type": "object",
@@ -63,7 +63,7 @@
         "required": [ "name", "requirements" ]
       }
     },
-    "price": { "type": "number", "minimum": 0, "exclusiveMinimum": true },
+    "price": { "type": "number", "exclusiveMinimum": 0 },
     "deadline": { "type": "integer" },
     "notes": { "type": "string" },
     "agentId": { "type": "string" },

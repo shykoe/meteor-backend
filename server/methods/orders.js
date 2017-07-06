@@ -149,7 +149,7 @@ Meteor.methods({
   //   errors: 全局错误信息, 如果设置的话表示失败, 其它域都不设置
   //   order: 新创建的订单
   // }
-  'orders.create': (data) => {
+  'orders.create': (order) => {
     const currentUser = Meteor.user();
     if (!currentUser) {
       return {
@@ -157,10 +157,9 @@ Meteor.methods({
       };
     }
 
-    const { order, method, pass, addrId } = data;
     let addr;
-    if (addrId && currentUser.addr) {
-      addr = currentUser.addr.find(elem => elem.id === addrId);
+    if (order.addrId && currentUser.addr) {
+      addr = currentUser.addr.find(elem => elem.id === order.addrId);
     }
 
     if (!addr) {
@@ -172,19 +171,6 @@ Meteor.methods({
           errors: '没有合法的联系地址信息. 请指定联系地址或在用户设置中添加联系地址'
         };
       }
-    }
-
-    if (!currentUser.ifPaymentPasswordSet) {
-      return {
-        errors: '支付密码未设置, 在支付前请先设置支付密码'
-      };
-    }
-
-    let res = Accounts.verifyPaymentPassword(pass);
-    if (res.error) {
-      return {
-        errors: '支付密码错误'
-      };
     }
 
     // 准备要插入的order
@@ -202,12 +188,12 @@ Meteor.methods({
       sampleBrand: order.sampleBrand,
       sampleNum: order.sampleNum,
       clientName: order.clientName,
-      clientContactName: order.clientContactName,
-      clientContactPhone: order.clientContactPhone,
-      clientContactIdent: order.clientContactIdent,
       clientContactAddress: addr,
+      clientContactIdent: order.clientContactIdent,
       clientEconomicType: order.clientEconomicType,
-      descImages: order.descImages
+      sampleDisposalType: order.sampleDisposalType,
+      reportFetchingType: order.reportFetchingType,
+      descImages: order.images
     };
 
     // validate失败时向client端返回errors
