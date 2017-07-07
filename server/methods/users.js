@@ -761,11 +761,11 @@ Meteor.methods({
     const newAddr = {
       id: Random.id(),
       name: addrObj.name,
-      tel: addrObj.phone,
+      tel: addrObj.tel,
       province: addrObj.province,
       city: addrObj.city,
       district: addrObj.district,
-      street: addrObj.detailAddress
+      street: addrObj.street
     };
 
     if (addrObj.setDefault) {
@@ -794,11 +794,11 @@ Meteor.methods({
     const newAddr = {
       id: addrObj.id,
       name: addrObj.name,
-      tel: addrObj.phone,
+      tel: addrObj.tel,
       province: addrObj.province,
       city: addrObj.city,
       district: addrObj.district,
-      street: addrObj.detailAddress
+      street: addrObj.street
     };
 
     if (addrObj.setDefault) {
