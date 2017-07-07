@@ -31,12 +31,12 @@
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
-          "tel": { "type": "string" },
+          "tel": { "type": "string", "pattern": "^0?(13[0-9]|15[012356789]|18[0-9]|17[0-9])[0-9]{8}$" },
           "province": { "type": "string" },
           "city": { "type": "string" },
           "district": { "type": "string" },
           "street": { "type": "string" },
-          "zip": { "type": "string" }
+          "zip": { "type": "string", "pattern": "^[0-9]{6}$" }
         },
         "required": [ "name", "tel", "province", "city", "district", "street" ]
       }
