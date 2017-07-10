@@ -193,7 +193,7 @@ Meteor.methods({
       clientEconomicType: order.clientEconomicType,
       sampleDisposalType: order.sampleDisposalType,
       reportFetchingType: order.reportFetchingType,
-      descImages: order.images
+      descImages: order.descImages
     };
 
     // validate失败时向client端返回errors
