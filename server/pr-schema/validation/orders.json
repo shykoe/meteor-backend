@@ -73,26 +73,16 @@
     },
     "agentMsg": { "type": "string" },
     "keeperMsg": { "type": "string" },
-    "productShippingInfo": {
+    "ShippingInfo": {
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "provider": { "type": "string" },
-          "no": { "type": "string" }
+          "no": { "type": "string" },
+          "description": { "type": "string" }
         },
-        "required": [ "provider", "no" ]
-      }
-    },
-    "reportShippingInfo": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "provider": { "type": "string" },
-          "no": { "type": "string" }
-        },
-        "required": [ "provider", "no" ]
+        "required": [ "provider", "no", "description" ]
       }
     },
     "sampleImages": {

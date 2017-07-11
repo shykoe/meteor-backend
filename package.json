@@ -8,9 +8,10 @@
     "ajv": "^5.1.6",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
-    "meteor-node-stubs": "~0.2.0",
+    "cheerio": "^1.0.0-rc.1",
+    "html-pdf": "^2.1.0",
+    "meteor-node-stubs": "~0.2.11",
     "moment": "^2.14.1",
-    "sequelize": "^3.30.4",
     "yunpian-sdk": "^1.0.0"
   }
 }

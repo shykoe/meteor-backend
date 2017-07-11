@@ -1,15 +1,20 @@
 import { Meteor } from 'meteor/meteor';
 import Users from '/server/pr-schema/models/users';
+import addDummyData from '/imports/sample';
 
 // 只有这样才能让Meteor将这些脚本加入build bundle, 从而可以在meteor shell中调用
 // 参见: https://github.com/meteor/meteor/issues/7629#issuecomment-239196322
 if (false) {  // eslint-disable-line
-  require('/imports/dummy_data/sample');
+  require('/imports/sample');
 }
 
-let patched = false;
+Meteor.publish('user', function () {
+  return Meteor.users.find({_id: this.userId});
+});
 
+let patched = false;
 Meteor.startup(() => {
+  addDummyData();
   // code to run on server at startup
   Meteor.server.onConnection(() => {
     if (!patched) {

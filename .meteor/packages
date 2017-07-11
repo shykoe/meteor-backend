@@ -17,3 +17,7 @@ percolate:synced-cron
 kehang-accounts-password
 random@1.0.10
 promise@0.8.8
+alanning:roles
+mdg:validated-method
+fongandrew:find-and-modify
+aldeed:simple-schema
