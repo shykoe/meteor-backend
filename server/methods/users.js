@@ -50,7 +50,7 @@ function generateMessage(currentUserId, eventType) {
 // 各个数据域的赋值
 Accounts.onCreateUser((options, user) => {
   user.ifPaymentPasswordSet = options.ifPaymentPasswordSet;
-  user.role = Consts.USER_ROLE_NORMAL;
+  user.role = options.role;
   user.balance = 0;
   user.addr = [];
   user.history = [];

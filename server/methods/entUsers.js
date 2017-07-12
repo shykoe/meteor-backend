@@ -14,22 +14,22 @@ Meteor.methods({
   'agent.get':()=>{
     return Users.find({'role':6},{fields:{'_id':1,'name':1}}).fetch();
   },
-  'agent.adduser.get': ( page, perpage, field, order) => {
+  'agent.adduser.get': (page, perpage, field, order) => {
   	const skiped = ( parseInt(page) - 1 ) * parseInt(perpage);
   	const orderid = order == 'ASC' ? 'asc':'desc';
     return Users.find({},{fields:{"username":1,"role":1,"password":1},skip:parseInt(skiped), limit:parseInt(perpage), sort:[[ field, orderid ]]}).fetch();
   },
-  'agent.adduser.getOne': ( id) => {
+  'agent.adduser.getOne': (id) => {
      return Users.findOne({'_id':id}, {fields:{"username":1,"role":1,"password":1}});
 
   },
-   'agent.adduser.updateData': ( id,data) => {
+   'agent.adduser.updateData': (id, data) => {
     const{password,role,username}=data;
      return Users.update({'_id':id}, { $set:{'role':role}});
 
   },
-  'agent.adduser.createUser': ( data) => {
-    const{password,role,username,phone}=data;
+  'agent.adduser.createUser': (data) => {
+    const{password, role, username, phone}=data;
     console.log(data);
     const nowDate = new Date();
     const user = {
@@ -46,31 +46,22 @@ Meteor.methods({
     const userId = Accounts.createUser(user);
     return Users.findOne({'_id':userId});
   },
-  'agent.adduser.checkUsername': ( username) => {
-    var x=Users.findOne({'username':username});
+  'agent.adduser.checkUsername': (username) => {
+    var x = Users.findOne({ 'username': username });
 
     if(typeof x == "undefined")
       return false;
     else
       return true;
   },
-  'checkPassword':(userName,password)=>{
-    const user = Users.findOne({'username':userName});
-    const rel = Accounts._checkPassword(user, password);
-    if(rel.error){
-      return false;
-    }else{
-      return true;
-    }
-  },
-  'changePWD':(userName, password)=>{
-    const userId = Users.findOne({'username':userName});
+  'setPWDReset':()=>{
+    const userId = Meteor.userId();
     if (!userId) {
       return false;
     }
-    Accounts.setPassword(userId,password);
-    Users.update({'_id':userId._id},{ $set:{'isPasswordReseted':true}});
-    return true;
+
+    const result = Users.update({ _id: userId, isPasswordReseted: undefined }, { $set: { isPasswordReseted: true } });
+    return result;
   },
   'checkPWDReset':(userName)=>{
     const userId = Users.findOne({'username':userName});
@@ -79,6 +70,5 @@ Meteor.methods({
     }else{
       return false;
     }
-
   }
 });
