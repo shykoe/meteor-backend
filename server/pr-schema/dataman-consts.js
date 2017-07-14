@@ -39,11 +39,11 @@ export const fields = Object.freeze({
     ['sampleBrand', 60],
     ['sampleNum', 60],
     ['clientName', 60],
-    ['clientContactName', 60],
-    ['clientContactPhone', 60],
-    ['clientContactIdent', 60],
     ['clientContactAddress', 60],
+    ['clientContactIdent', 60],
     ['clientEconomicType', 60],
+    ['sampleDisposalType', 60],
+    ['reportFetchingType', 60],
     ['descImages', 60],
     ['reportNo', 60],
     ['categoryName', 60],
@@ -56,8 +56,7 @@ export const fields = Object.freeze({
     ['testerIds', 60],
     ['agentMsg', 60],
     ['keeperMsg', 60],
-    ['productShippingInfo', 60],
-    ['reportShippingInfo', 60],
+    ['ShippingInfo', 60],
     ['sampleImages', 60],
     ['testingImages', 60],
     ['refundNotes', 60],
@@ -126,38 +125,37 @@ export const fieldSets = Object.freeze({
       'order-list',
       ['userId', 'status', 'createdAt', 'approvedAt', 'rejectedAt', 'paidAt', 'refundedAt',
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
-       'sampleNum', 'clientName', 'clientContactName', 'clientContactPhone', 'clientContactIdent',
-       'clientContactAddress', 'clientEconomicType', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'productShippingInfo',
-       'reportShippingInfo', 'refundNotes']
+       'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
+       'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'reportNo', 'categoryName',
+       'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo', 'refundNotes']
     ],
     [
       'order-detail',
       ['userId', 'status', 'createdAt', 'approvedAt', 'rejectedAt', 'paidAt', 'refundedAt',
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
-       'sampleNum', 'clientName', 'clientContactName', 'clientContactPhone', 'clientContactIdent',
-       'clientContactAddress', 'clientEconomicType', 'descImages', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'productShippingInfo',
-       'reportShippingInfo', 'refundNotes']
+       'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
+       'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'descImages', 'reportNo',
+       'categoryName', 'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo',
+       'refundNotes']
     ],
     [
       'order-adminList',
       ['userId', 'status', 'createdAt', 'approvedAt', 'rejectedAt', 'paidAt', 'refundedAt',
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
-       'sampleNum', 'clientName', 'clientContactName', 'clientContactPhone', 'clientContactIdent',
-       'clientContactAddress', 'clientEconomicType', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'productShippingInfo',
-       'reportShippingInfo', 'refundNotes', 'agentId', 'testerIds', 'agentMsg', 'keeperMsg']
+       'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
+       'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'reportNo', 'categoryName',
+       'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo', 'refundNotes', 'agentId',
+       'testerIds', 'agentMsg', 'keeperMsg']
     ],
     [
       'order-adminDetail',
       ['userId', 'status', 'createdAt', 'approvedAt', 'rejectedAt', 'paidAt', 'refundedAt',
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
-       'sampleNum', 'clientName', 'clientContactName', 'clientContactPhone', 'clientContactIdent',
-       'clientContactAddress', 'clientEconomicType', 'descImages', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'productShippingInfo',
-       'reportShippingInfo', 'refundNotes', 'agentId', 'testerIds', 'agentMsg', 'keeperMsg',
-       'sampleImages', 'testingImages']
+       'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
+       'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'descImages', 'reportNo',
+       'categoryName', 'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo',
+       'refundNotes', 'agentId', 'testerIds', 'agentMsg', 'keeperMsg', 'sampleImages',
+       'testingImages']
     ]
   ],
   feedbacks: [
