@@ -54,7 +54,7 @@
     },
     "activeCustServRequest": { "type": "string" },
     "custServHistory": {
-      "type": "array"
+      "type": "array",
       "items": {
         "type": "object",
         "properties": {
