@@ -49,6 +49,8 @@ export const fields = Object.freeze({
     ['categoryName', 60],
     ['levelName', 60],
     ['items', 60],
+    ['activeCustServRequest', 60],
+    ['custServHistory', 60],
     ['price', 60],
     ['deadline', 60],
     ['notes', 60],
@@ -127,7 +129,8 @@ export const fieldSets = Object.freeze({
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
        'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
        'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo', 'refundNotes']
+       'levelName', 'items', 'activeCustServRequest', 'custServHistory', 'price', 'deadline',
+       'notes', 'ShippingInfo', 'refundNotes']
     ],
     [
       'order-detail',
@@ -135,8 +138,8 @@ export const fieldSets = Object.freeze({
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
        'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
        'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'descImages', 'reportNo',
-       'categoryName', 'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo',
-       'refundNotes']
+       'categoryName', 'levelName', 'items', 'activeCustServRequest', 'custServHistory', 'price',
+       'deadline', 'notes', 'ShippingInfo', 'refundNotes']
     ],
     [
       'order-adminList',
@@ -144,8 +147,8 @@ export const fieldSets = Object.freeze({
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
        'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
        'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'reportNo', 'categoryName',
-       'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo', 'refundNotes', 'agentId',
-       'testerIds', 'agentMsg', 'keeperMsg']
+       'levelName', 'items', 'activeCustServRequest', 'custServHistory', 'price', 'deadline',
+       'notes', 'ShippingInfo', 'refundNotes', 'agentId', 'testerIds', 'agentMsg', 'keeperMsg']
     ],
     [
       'order-adminDetail',
@@ -153,9 +156,9 @@ export const fieldSets = Object.freeze({
        'sampleName', 'sampleProducer', 'producerBatch', 'sampleType', 'sampleLevel', 'sampleBrand',
        'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
        'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'descImages', 'reportNo',
-       'categoryName', 'levelName', 'items', 'price', 'deadline', 'notes', 'ShippingInfo',
-       'refundNotes', 'agentId', 'testerIds', 'agentMsg', 'keeperMsg', 'sampleImages',
-       'testingImages']
+       'categoryName', 'levelName', 'items', 'activeCustServRequest', 'custServHistory', 'price',
+       'deadline', 'notes', 'ShippingInfo', 'refundNotes', 'agentId', 'testerIds', 'agentMsg',
+       'keeperMsg', 'sampleImages', 'testingImages']
     ]
   ],
   feedbacks: [
