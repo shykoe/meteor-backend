@@ -47,20 +47,21 @@
         "type": "object",
         "properties": {
           "name": { "type": "string" },
-          "requirements": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": { "type": "string" },
-                "result": { "type": "string" },
-                "verdict": { "type": "boolean" }
-              },
-              "required": [ "name" ]
-            }
-          }
+          "verdict": { "type": "boolean" }
         },
-        "required": [ "name", "requirements" ]
+        "required": [ "name" ]
+      }
+    },
+    "activeCustServRequest": { "type": "string" },
+    "custServHistory": {
+      "type": "array"
+      "items": {
+        "type": "object",
+        "properties": {
+          "request": { "type": "string" },
+          "reply": { "type": "string" }
+        },
+        "required": [ "request" ]
       }
     },
     "price": { "type": "number", "exclusiveMinimum": 0 },
