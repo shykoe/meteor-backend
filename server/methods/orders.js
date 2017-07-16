@@ -175,50 +175,101 @@ Meteor.methods({
       }
     }
 
-    // 准备要插入的order
-    const nowDate = new Date();
-    const newOrder = {
-      _id: generateOrderId(nowDate),
-      userId: currentUser._id,
-      createdAt: nowDate / 1,
-      status: Consts.ORDER_STATUS_UNCLAIMED,
-      sampleName: order.sampleName,
-      sampleProducer: order.sampleProducer,
-      producerBatch: order.producerBatch,
-      sampleType: order.sampleType,
-      sampleLevel: order.sampleLevel,
-      sampleBrand: order.sampleBrand,
-      sampleNum: order.sampleNum,
-      clientName: order.clientName,
-      clientContactAddress: addr,
-      clientContactIdent: order.clientContactIdent,
-      clientEconomicType: order.clientEconomicType,
-      sampleDisposalType: order.sampleDisposalType,
-      reportFetchingType: order.reportFetchingType,
-      descImages: order.descImages
-    };
+    if (order._id) {
+      // 首先确定这个order存在, 属于这个用户, 并且可以被修改
+      const orderObj = Orders.findOne({
+        _id: order._id,
+        userId: currentUser._id
+      });
+      if (!orderObj) {
+        return {
+          errors: '订单不存在!'
+        };
+      }
 
-    // validate失败时向client端返回errors
-    // TODO: 解析错误信息
-    res = schemaValidate('orderSchema', newOrder);
-    if (res) {
-      return {
-        errors: '数据格式错误'
+      if (orderObj.status === Consts.ORDER_STATUS_REJECTED &&
+          new Date() - orderObj.rejectedAt <= 72 * 3600 * 1000) {
+        const newOrder = {};
+        const fields = ['sampleName', 'sampleType', 'sampleNum', 'sampleLevel', 'sampleBrand',
+                        'producerBatch', 'sampleProducer', 'clientName', 'sampleDisposalType',
+                        'reportFetchingType', 'descImages'];
+
+        for (const k of fields) {
+          if (order[k] !== undefined) {
+            newOrder[k] = order[k];
+          }
+        }
+
+        newOrder.clientContactAddress = addr;
+
+        // 修改指定订单
+        Orders.update({
+          _id: order._id,
+          userId: currentUser._id
+        }, {
+          $set: newOrder
+        });
+
+        // 返回更新后的订单
+        const fsi = getIdxFromFieldSetName('orders', 'order-detail');
+        return Meteor.call('orders.getById', order._id, fsi);
+      } else {
+        if (orderObj.status === Consts.ORDER_STATUS_REJECTED) {
+          return {
+            errors: '订单已过期关闭, 请提交新的订单'
+          };
+        } else {
+          return {
+            errors: '订单在当前状态下不能修改'
+          };
+        }
+      }
+    } else {
+      // 准备要插入的order
+      const nowDate = new Date();
+      const newOrder = {
+        _id: generateOrderId(nowDate),
+        userId: currentUser._id,
+        createdAt: nowDate / 1,
+        status: Consts.ORDER_STATUS_UNCLAIMED,
+        sampleName: order.sampleName,
+        sampleProducer: order.sampleProducer,
+        producerBatch: order.producerBatch,
+        sampleType: order.sampleType,
+        sampleLevel: order.sampleLevel,
+        sampleBrand: order.sampleBrand,
+        sampleNum: order.sampleNum,
+        clientName: order.clientName,
+        clientContactAddress: addr,
+        // clientContactIdent: order.clientContactIdent,
+        // clientEconomicType: order.clientEconomicType,
+        sampleDisposalType: order.sampleDisposalType,
+        reportFetchingType: order.reportFetchingType,
+        descImages: order.descImages
       };
-    }
 
-    // 没有问题就下单
-    try {
-      Orders.insert(newOrder);
-    } catch (e) {
-      return {
-        errors: '订单创建失败'
-      };
-    }
+      // validate失败时向client端返回errors
+      // TODO: 解析错误信息
+      res = schemaValidate('orderSchema', newOrder);
+      if (res) {
+        return {
+          errors: '数据格式错误'
+        };
+      }
 
-    // 下单成功, 返回新创建的订单
-    const fsi = getIdxFromFieldSetName('orders', 'order-list');
-    return Meteor.call('orders.getById', newOrder._id, fsi);
+      // 没有问题就下单
+      try {
+        Orders.insert(newOrder);
+      } catch (e) {
+        return {
+          errors: '订单创建失败'
+        };
+      }
+
+      // 下单成功, 返回新创建的订单
+      const fsi = getIdxFromFieldSetName('orders', 'order-list');
+      return Meteor.call('orders.getById', newOrder._id, fsi);
+    }
   },
   'orders.addCustServRequest': (data) => {
     const currentUser = Meteor.user();
