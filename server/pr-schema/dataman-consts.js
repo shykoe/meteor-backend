@@ -143,7 +143,7 @@ export const fieldSets = Object.freeze({
     ],
     [
       'order-cust-serv-add',
-      'activeCustServRequest'
+      ['activeCustServRequest']
     ],
     [
       'order-adminList',
