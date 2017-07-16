@@ -238,7 +238,7 @@ Meteor.methods({
 
     if (order.activeCustServRequest) {
       return {
-        errors: '已经提交了客服申请, 请等待回复'
+        errors: '已经提交了售后申请, 请等待客服回复后再提交新的申请'
       };
     }
 
@@ -264,7 +264,7 @@ Meteor.methods({
 
     if (result === 0) {
       return {
-        errors: '提交客服申请失败'
+        errors: '提交售后申请失败, 请稍后再试'
       };
     }
 
