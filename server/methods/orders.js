@@ -15,6 +15,8 @@ import { getRandomInt, round, round2 } from '/server/kh-helpers/math';
 import { schemaValidate } from '/server/pr-schema/validate';
 import { getFieldSetFromIdx, getIdxFromFieldSetName } from '/server/pr-schema/dataman-utils';
 
+const predefinedCustServRequests = ['关闭订单', '退款', '其它'];
+
 function generateOrderId(nowDate) {
   let rand8 = '';
   for (let i = 0; i < 8; i++) {
@@ -218,6 +220,59 @@ Meteor.methods({
     const fsi = getIdxFromFieldSetName('orders', 'order-list');
     return Meteor.call('orders.getById', newOrder._id, fsi);
   },
+  'orders.addCustServRequest': (data) => {
+    const currentUser = Meteor.user();
+    if (!currentUser) {
+      return {
+        errors: '未登录用户不能修改订单, 请登录!'
+      };
+    }
+
+    const { orderId, selectRequest, content } = data;
+    const order = Orders.findOne({ _id: orderId });
+    if (!order) {
+      return {
+        errors: '订单不存在!'
+      };
+    }
+
+    if (order.activeCustServRequest) {
+      return {
+        errors: '已经提交了客服申请, 请等待回复'
+      };
+    }
+
+    let csContent;
+    if (predefinedCustServRequests[selectRequest]) {
+      csContent = predefinedCustServRequests[selectRequest];
+      if (content) {
+        csContent += ': ' + content;
+      }
+    } else {
+      csContent = content;
+    }
+
+    // 修改当前订单的状态
+    const result = Orders.update({
+      _id: orderId,
+      activeCustServRequest: undefined
+    }, {
+      $set: {
+        activeCustServRequest: csContent
+      }
+    });
+
+    if (result === 0) {
+      return {
+        errors: '提交客服申请失败'
+      };
+    }
+
+    // 最后, 返回修改的订单和相关信息
+    const curUser = Meteor.user();
+    const fsi = getIdxFromFieldSetName('orders', 'order-cust-serv-add');
+    return Meteor.call('orders.getById', orderId, fsi);
+  },
   'orders.pay': (data) => {
     const currentUser = Meteor.user();
     if (!currentUser) {
@@ -415,9 +470,11 @@ Meteor.methods({
       _id: orderId,
       status: Consts.ORDER_STATUS_PAID
     }, {
-      $set: { status: Consts.ORDER_STATUS_REFUNDED },
-      refundedAt: nowDate / 1,
-      refundNotes
+      $set: {
+        status: Consts.ORDER_STATUS_REFUNDED,
+        refundedAt: nowDate / 1,
+        refundNotes
+      }
     });
 
     if (result === 0) {
