@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@bitbucket.org:kehang/gj-schema.git
 	branch = master
-	commit = 637dbb78d416be9dd49b4178c9ca142dc2eec87f
-	parent = 11be62447b24b0504850e0cad3e72294aa236a75
+	commit = 09ffcbb8f999c2ca0422a185fe6e85ff9aaa7cc1
+	parent = 0c2ef6be427352ff6db8ea02f82ab4277b751b42
 	cmdver = 0.3.1

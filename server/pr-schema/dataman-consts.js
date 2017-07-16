@@ -139,7 +139,11 @@ export const fieldSets = Object.freeze({
        'sampleNum', 'clientName', 'clientContactAddress', 'clientContactIdent',
        'clientEconomicType', 'sampleDisposalType', 'reportFetchingType', 'descImages', 'reportNo',
        'categoryName', 'levelName', 'items', 'activeCustServRequest', 'custServHistory', 'price',
-       'deadline', 'notes', 'ShippingInfo', 'refundNotes']
+       'deadline', 'notes', 'ShippingInfo', 'refundNotes', 'sampleImages', 'testingImages']
+    ],
+    [
+      'order-cust-serv-add',
+      'activeCustServRequest'
     ],
     [
       'order-adminList',
