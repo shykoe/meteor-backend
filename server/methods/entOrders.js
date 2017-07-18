@@ -64,10 +64,10 @@ Meteor.methods({
   },
 
   'agent.orders.get': (userName, role, page, perpage, field, order, filter) => {
-    // 首先确保当前用户已经登录并且是公司业务员
+    // 首先确保当前用户已经登录并且是公司员工
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
+    if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
