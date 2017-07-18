@@ -3,13 +3,8 @@ import Users from '/server/pr-schema/models/users';
 import { schemaValidate } from '/server/pr-schema/validate';
 
 Meteor.methods({
-  'users.role': (userName) => {
-    // 首先确保当前用户已经登录并且是企业员工
-    const currentUser = Meteor.user();
-    if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
-
-    return currentUser.role;
+  'users.role': (username) => {
+    return Users.findOne({ username }, { fields: { role: 1 } }).role;
   },
 
   'user.getid': (userName) => {
