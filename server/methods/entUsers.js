@@ -123,13 +123,8 @@ Meteor.methods({
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
 
-    const userId = Meteor.userId();
-    if (!userId) {
-      return false;
-    }
-
     const result = Users.update({
-      _id: userId,
+      _id: currentUser._id,
       isPasswordReseted: undefined
     }, { $set: { isPasswordReseted: true } });
     return result;
@@ -141,7 +136,6 @@ Meteor.methods({
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
 
-    const userId = Users.findOne({ userName });
-    return userId && userId.isPasswordReseted;
+    return currentUser && currentUser.isPasswordReseted;
   }
 });
