@@ -4,7 +4,7 @@ import Reports from '/server/pr-schema/models/reports';
 import Users from '/server/pr-schema/models/users';
 import Categories from '/server/pr-schema/models/categories';
 
-function enhanceOrders(orders) {
+function enhanceOrders(orders, total) {
   // Fetch the agent usernames and tester usernames referenced in these orders
   // as we need them for display.
   const userDict = {}
@@ -41,7 +41,14 @@ function enhanceOrders(orders) {
     }
   }
 
-  return orders;
+  if (total) {
+    return {
+      data: orders,
+      total
+    };
+  } else {
+    return orders;
+  }
 }
 
 Meteor.methods({
@@ -54,13 +61,13 @@ Meteor.methods({
 
   	const skipped = (parseInt(page) - 1) * parseInt(perpage);
   	const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    const orders = Orders.find({ agentId: currentUser._id }, {
+    const query = Orders.find({ agentId: currentUser._id }, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [[ field, sortOrder ]]
-    }).fetch();
+    });
 
-    return enhanceOrders(orders);
+    return enhanceOrders(query.fetch(), query.count());
   },
 
   'agent.orders.get': (userName, role, page, perpage, field, order, filter) => {
@@ -71,13 +78,13 @@ Meteor.methods({
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    const orders = Orders.find(filter || {}, {
+    const query = Orders.find(filter || {}, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [[ field, sortOrder ]]
-    }).fetch();
+    });
 
-    return enhanceOrders(orders);
+    return enhanceOrders(query.fetch(), query.count());
   },
 
   //find one order by id
@@ -153,10 +160,10 @@ Meteor.methods({
       return Promise.reject('data error');
     }
 
-    return Orders.findOne({
+    return enhanceOrders(Orders.findOne({
       '_id': id,
       agentId: currentUser._id
-    });
+    }))[0];
   },
 
   //find the orders by the tester's username
@@ -168,13 +175,15 @@ Meteor.methods({
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    return Orders.find({
+    const query = Orders.find({
       testers: currentUser._id
     }, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [[ field, sortOrder ]]
-    }).fetch();
+    });
+
+    return enhanceOrders(query.fetch(), query.count());
   },
 
   //tester update
@@ -199,7 +208,8 @@ Meteor.methods({
     if(rel === 0){
       return Promise.reject('data error');
     }
-    return Orders.findOne({ _id: id });
+
+    return enhanceOrders(Orders.findOne({ _id: id }))[0];
   },
 
   'tester.img.update': (id, data) => {
@@ -241,23 +251,27 @@ Meteor.methods({
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    if(filter.status) {
-      return Orders.find({
+
+    let query;
+    if (filter.status) {
+      query = Orders.find({
         status: {
           $in: filter.status
         }
-      },{
+      }, {
         skip: parseInt(skipped),
         limit: parseInt(perpage),
         sort: [[ field, orderid ]]
-      }).fetch();
+      });
+    } else {
+      query = Orders.find({}, {
+        skip: parseInt(skipped),
+        limit:parseInt(perpage),
+        sort: [[ field, sortOrder ]]
+      });
     }
 
-    return Orders.find({}, {
-      skip: parseInt(skipped),
-      limit:parseInt(perpage),
-      sort: [[ field, sortOrder ]]
-    }).fetch();
+    return enhanceOrders(query.fetch(), query.count());
   },
 
   'keeper.order.update':(id,data)=>{
@@ -268,7 +282,7 @@ Meteor.methods({
 
     const { status } = data;
     const rel = Orders.update({ _id: id }, { $set: { status } });
-    return Orders.findOne({ _id: id });
+    return enhanceOrders(Orders.findOne({ _id: id }))[0];
   },
 
   //assigner set the order's testers
@@ -280,7 +294,7 @@ Meteor.methods({
 
     const { tester } = data;
     const rel = Orders.update({ _id: id }, { $set: { tester, status: 9 } });
-    return Orders.findOne({ _id: id });
+    return enhanceOrders(Orders.findOne({ _id: id }))[0];
   },
 
   'agent.allorder.get': (page, perpage, field, order) => {
@@ -290,26 +304,28 @@ Meteor.methods({
     if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
-    x = Orders.find({}, {
+    const query = Orders.find({}, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [order]
-    }).fetch();
-    return x;
+    });
+
+    return enhanceOrders(query.fetch(), query.count());
   },
 
-  'agent.allorder.getFilter': ( page, perpage, field, order,myfilter) => {
+  'agent.allorder.getFilter': (page, perpage, field, order,myfilter) => {
     // 首先确保当前用户已经登录并且是公司业务员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
-    x = Orders.find(myfilter, {
+    const query = Orders.find(myfilter, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [order]
-    }).fetch();
-    return x;
+    });
+
+    return enhanceOrders(query.fetch(), query.count());
   }
 });
