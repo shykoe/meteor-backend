@@ -41,7 +41,7 @@ function enhanceOrders(orders, total) {
     }
   }
 
-  if (total) {
+  if (total !== undefined) {
     return {
       data: orders,
       total
