@@ -53,7 +53,7 @@ function enhanceOrders(orders, total) {
 
 Meteor.methods({
   //find own orders
-  'agent.myorders.get': (userName, role, page, perpage, field, order) => {
+  'agent.myorders.get': (userName, role, page, perpage, field, order, filter) => {
     // 首先确保当前用户已经登录并且是公司业务员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
@@ -61,7 +61,25 @@ Meteor.methods({
 
   	const skipped = (parseInt(page) - 1) * parseInt(perpage);
   	const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    const query = Orders.find({ agentId: currentUser._id }, {
+
+    let finalFilter;
+    if (filter.agentId && filter.agentId.$eq !== undefined &&
+        filter.agentId.$eq !== currentUser._id) {
+      finalFilter = {
+        ...filter,
+        agentId: { eq: 'N/A' }
+      };
+    } else {
+      finalFilter = {
+        ...filter,
+        agentId: {
+          ...filter.agentId,
+          $eq: currentUser._id
+        }
+      };
+    }
+
+    const query = Orders.find(finalFilter, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
       sort: [[ field, sortOrder ]]
