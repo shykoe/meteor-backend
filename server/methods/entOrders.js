@@ -59,14 +59,13 @@ function updateTesterOps(data, ops, userId) {
     categoryName,
   } = data;
 
-  for (const itemName in ops ) {
-    if (ops[itemName]) {
+  for (const itemName in ops) {
+    if (ops[itemName] !== undefined) {
       TesterOps.insert({
         levelName,
         categoryName,
         itemName,
-        result: ops[itemName].result,
-        verdict: ops[itemName].verdict,
+        verdict: ops[itemName],
         userId,
         orderId: _id,
         createdAt: new Date() / 1
@@ -245,8 +244,7 @@ Meteor.methods({
       }
     });
 
-    const order = Orders.findOne({ _id: id });
-    Meteor.call('testerOps.update', order, ops, currentUser._id);
+    updateTesterOps(data, ops, currentUser._id);
 
     if(rel === 0){
       return Promise.reject('data error');
