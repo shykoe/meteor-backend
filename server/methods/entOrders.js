@@ -202,10 +202,10 @@ Meteor.methods({
       return Promise.reject('data error');
     }
 
-    return enhanceOrders(Orders.findOne({
+    return enhanceOrders([Orders.findOne({
       '_id': id,
       agentId: currentUser._id
-    }))[0];
+    })])[0];
   },
 
   //find the orders by the tester's username
@@ -219,7 +219,7 @@ Meteor.methods({
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
     const query = Orders.find({
       ...filter,
-      testers: currentUser._id
+      testerIds: currentUser._id
     }, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
@@ -252,7 +252,7 @@ Meteor.methods({
       return Promise.reject('data error');
     }
 
-    return enhanceOrders(Orders.findOne({ _id: id }))[0];
+    return enhanceOrders([Orders.findOne({ _id: id })])[0];
   },
 
   'tester.img.update': (id, data) => {
@@ -312,7 +312,7 @@ Meteor.methods({
 
     const { status } = data;
     const rel = Orders.update({ _id: id }, { $set: { status } });
-    return enhanceOrders(Orders.findOne({ _id: id }))[0];
+    return enhanceOrders([Orders.findOne({ _id: id })])[0];
   },
 
   //assigner set the order's testers
@@ -322,14 +322,15 @@ Meteor.methods({
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_ASSIGNER)) { return { errors: '用户权限不足' }; }
 
-    const { tester } = data;
-    const rel = Orders.update({ _id: id }, { $set: { tester, status: 9 } });
-    return enhanceOrders(Orders.findOne({ _id: id }))[0];
+    const { testerIds } = data;
+    const rel = Orders.update({ _id: id }, { $set: { testerIds, status: Consts.ORDER_STATUS_ASSIGNED } });
+    return enhanceOrders([Orders.findOne({ _id: id })])[0];
   },
 
   'agent.allorder.get': (page, perpage, field, order, filter) => {
-    // 首先确保当前用户已经登录并且是公司业务员
+    // 首先确保当前用户已经登录并且是公司业务员或管理员
     const currentUser = Meteor.user();
+
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role <= Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
@@ -348,6 +349,7 @@ Meteor.methods({
   'agent.adduser.get': (page, perpage, field, order) => {
     // 首先确保当前用户已经登录并且是企业管理员
     const currentUser = Meteor.user();
+
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_ADMIN)) { return { errors: '用户权限不足' }; }
 
