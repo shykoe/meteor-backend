@@ -3,6 +3,7 @@ import Orders from '/server/pr-schema/models/orders';
 import Reports from '/server/pr-schema/models/reports';
 import Users from '/server/pr-schema/models/users';
 import Categories from '/server/pr-schema/models/categories';
+import TesterOps from '/server/pr-schema/models/testerOps';
 
 function enhanceOrders(orders, total) {
   // Fetch the agent usernames and tester usernames referenced in these orders
@@ -48,6 +49,29 @@ function enhanceOrders(orders, total) {
     };
   } else {
     return orders;
+  }
+}
+
+function updateTesterOps(data, ops, userId) {
+  const {
+    _id,
+    levelName,
+    categoryName,
+  } = data;
+
+  for (const itemName in ops ) {
+    if (ops[itemName]) {
+      TesterOps.insert({
+        levelName,
+        categoryName,
+        itemName,
+        result: ops[itemName].result,
+        verdict: ops[itemName].verdict,
+        userId,
+        orderId: _id,
+        createdAt: new Date() / 1
+      });
+    }
   }
 }
 
@@ -185,7 +209,7 @@ Meteor.methods({
   },
 
   //find the orders by the tester's username
-  'tester.orders.get': (userName, role, page, perpage, field, order) => {
+  'tester.orders.get': (userName, role, page, perpage, field, order, filter) => {
     // 首先确保当前用户已经登录并且是公司检验员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
@@ -194,6 +218,7 @@ Meteor.methods({
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
     const query = Orders.find({
+      ...filter,
       testers: currentUser._id
     }, {
       skip: parseInt(skipped),
@@ -221,7 +246,7 @@ Meteor.methods({
     });
 
     const order = Orders.findOne({ _id: id });
-    Meteor.call('testerOps.update', order, ops, userName);
+    Meteor.call('testerOps.update', order, ops, currentUser._id);
 
     if(rel === 0){
       return Promise.reject('data error');
@@ -270,24 +295,11 @@ Meteor.methods({
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
     const sortOrder = order === 'ASC' ? 'asc' : 'desc';
 
-    let query;
-    if (filter.status) {
-      query = Orders.find({
-        status: {
-          $in: filter.status
-        }
-      }, {
-        skip: parseInt(skipped),
-        limit: parseInt(perpage),
-        sort: [[ field, orderid ]]
-      });
-    } else {
-      query = Orders.find({}, {
-        skip: parseInt(skipped),
-        limit:parseInt(perpage),
-        sort: [[ field, sortOrder ]]
-      });
-    }
+    const query = Orders.find(filter || {}, {
+      skip: parseInt(skipped),
+      limit: parseInt(perpage),
+      sort: [[ field, sortOrder ]]
+    });
 
     return enhanceOrders(query.fetch(), query.count());
   },
@@ -315,35 +327,50 @@ Meteor.methods({
     return enhanceOrders(Orders.findOne({ _id: id }))[0];
   },
 
-  'agent.allorder.get': (page, perpage, field, order) => {
+  'agent.allorder.get': (page, perpage, field, order, filter) => {
     // 首先确保当前用户已经登录并且是公司业务员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
+    if (!(currentUser.role <= Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
-    const query = Orders.find({}, {
+    const sortOrder = order === 'ASC' ? 'asc' : 'desc';
+
+    const query = Orders.find(filter || {}, {
       skip: parseInt(skipped),
       limit: parseInt(perpage),
-      sort: [order]
+      sort: [[ field, sortOrder ]]
     });
 
     return enhanceOrders(query.fetch(), query.count());
   },
 
-  'agent.allorder.getFilter': (page, perpage, field, order,myfilter) => {
-    // 首先确保当前用户已经登录并且是公司业务员
+  'agent.adduser.get': (page, perpage, field, order) => {
+    // 首先确保当前用户已经登录并且是企业管理员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
+    if (!(currentUser.role === Consts.USER_ROLE_ADMIN)) { return { errors: '用户权限不足' }; }
 
     const skipped = (parseInt(page) - 1) * parseInt(perpage);
-    const query = Orders.find(myfilter, {
+    const sortOrder = order === 'ASC' ? 'asc' : 'desc';
+    const query = Users.find({
+      role: { $lt: Consts.USER_ROLE_NORMAL }
+    }, {
+      fields: { username: 1, role: 1, password: 1 },
       skip: parseInt(skipped),
       limit: parseInt(perpage),
-      sort: [order]
+      sort: [[ field, sortOrder ]]
     });
 
     return enhanceOrders(query.fetch(), query.count());
-  }
+  },
+
+  'agent.adduser.getOne': (id) => {
+    // 首先确保当前用户已经登录并且是企业管理员
+    const currentUser = Meteor.user();
+    if (!currentUser) { return { errors: '用户未登录' }; }
+    if (!(currentUser.role === Consts.USER_ROLE_ADMIN)) { return { errors: '用户权限不足' }; }
+
+     return Users.findOne({ _id: id }, { fields: { username: 1, role: 1, password: 1 } });
+  },
 });

@@ -42,31 +42,6 @@ Meteor.methods({
     }).fetch();
   },
 
-  'agent.adduser.get': (page, perpage, field, order) => {
-    // 首先确保当前用户已经登录并且是企业管理员
-    const currentUser = Meteor.user();
-    if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role === Consts.USER_ROLE_ADMIN)) { return { errors: '用户权限不足' }; }
-
-  	const skipped = (parseInt(page) - 1) * parseInt(perpage);
-  	const sortOrder = order === 'ASC' ? 'asc' : 'desc';
-    return Users.find({}, {
-      fields: { username: 1, role: 1, password: 1 },
-      skip: parseInt(skipped),
-      limit: parseInt(perpage),
-      sort: [[ field, sortOrder ]]
-    }).fetch();
-  },
-
-  'agent.adduser.getOne': (id) => {
-    // 首先确保当前用户已经登录并且是企业管理员
-    const currentUser = Meteor.user();
-    if (!currentUser) { return { errors: '用户未登录' }; }
-    if (!(currentUser.role === Consts.USER_ROLE_ADMIN)) { return { errors: '用户权限不足' }; }
-
-     return Users.findOne({ _id: id }, { fields: { username: 1, role: 1, password: 1 } });
-  },
-
   'agent.adduser.updateData': (id, data) => {
     // 首先确保当前用户已经登录并且是企业管理员
     const currentUser = Meteor.user();

@@ -1,3 +1,4 @@
+import Consts from '/server/pr-schema/consts';
 import Reports from '/server/pr-schema/models/reports';
 import Orders from '/server/pr-schema/models/orders';
 import Users from '/server/pr-schema/models/users';
@@ -8,7 +9,7 @@ function padNum(num){
 	var rel = '';
 	for(var i in date){
 		var nu = date[i];
-		if(nu.length<2){
+		if(nu.length < 2){
 			nu = '0' + nu;
 		}
 
@@ -16,28 +17,36 @@ function padNum(num){
 	}
 	num = '00000' + num;
 
-	rel += num.substring(num.length-5, num.length);
+	rel += num.substring(num.length - 5, num.length);
 	return rel;
 }
+
 Meteor.methods({
-	'reports.find.orderid':(orderid)=>{
-		return Reports.findOne({'orderId':orderid});
+	'reports.find.orderid': (orderId) => {
+    const currentUser = Meteor.user();
+    if (!currentUser) { return { errors: '用户未登录' }; }
+    if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
+
+		return Reports.findOne({ orderId });
 	},
-	'reports.upsert':(data, orderid, username)=>{
-		//find report by orderid upsert
-		const userId = Users.findOne({'username':username})._id;
-		data.userId = userId;
-		data.orderId = orderid;
+	'reports.upsert': (data, orderId, username)=>{
+    const currentUser = Meteor.user();
+    if (!currentUser) { return { errors: '用户未登录' }; }
+    if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
+
+		// Find report by orderId upsert
+		data.userId = currentUser._id;
+		data.orderId = orderId;
 		var num = Meta.findAndModify({
-			query: {name: "reportNo"},
-			update: {$inc: {value:1}},
-			fields: {value: 1}
+			query: { name: "reportNo" },
+			update: { $inc: { value: 1 } },
+			fields: { value: 1 }
 		}).value;
 
 		data.reportNo = padNum(num);
-		const rel = Reports.upsert({orderId:orderid},data);
-		if(rel){
-			Orders.update({'_id':orderid},{$set:{status:10}});
+		const rel = Reports.upsert({ orderId }, data);
+		if(rel) {
+			Orders.update({ _id: orderId }, { $set: { status: Consts.ORDER_STATUS_TESTED } });
 		}
 	}
 })
