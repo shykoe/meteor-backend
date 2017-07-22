@@ -286,7 +286,7 @@ Meteor.methods({
   },
 
   // find all orders
-  'orders.get':(page, perpage, field, order, filter)=>{
+  'orders.get': (page, perpage, field, order, filter) => {
     // 首先确保当前用户已经登录并且是企业员工
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
@@ -304,19 +304,27 @@ Meteor.methods({
     return enhanceOrders(query.fetch(), query.count());
   },
 
-  'keeper.order.update':(id,data)=>{
+  'keeper.order.update': (id, data) => {
     // 首先确保当前用户已经登录并且是公司仓库操作员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_KEEPER)) { return { errors: '用户权限不足' }; }
 
-    const { status } = data;
-    const rel = Orders.update({ _id: id }, { $set: { status } });
+    const { status, keeperMsg } = data;
+    const setObj = {};
+    if (status) {
+      setObj.status = status;
+    }
+    if (keeperMsg) {
+      setObj.keeperMsg = keeperMsg;
+    }
+
+    const rel = Orders.update({ _id: id }, { $set: setObj });
     return enhanceOrders([Orders.findOne({ _id: id })])[0];
   },
 
   //assigner set the order's testers
-  'assigner.tester.set':(id, data)=>{
+  'assigner.tester.set': (id, data) => {
     // 首先确保当前用户已经登录并且是公司仓库操作员
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
