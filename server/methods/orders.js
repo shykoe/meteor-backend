@@ -201,11 +201,13 @@ Meteor.methods({
         }
 
         newOrder.clientContactAddress = addr;
+        newOrder.status = Consts.ORDER_STATUS_UNCLAIMED;
 
         // 修改指定订单
         Orders.update({
           _id: order._id,
-          userId: currentUser._id
+          userId: currentUser._id,
+          status: Consts.ORDER_STATUS_REJECTED
         }, {
           $set: newOrder
         });
