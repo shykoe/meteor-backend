@@ -13,7 +13,7 @@ const getBase64String = (path) => {
 
 const generatePDF = (html, fileName) => {
   try {
-    pdf.create(html).toFile(`./${fileName}`, (error, response) => {
+    pdf.create(html, { border: '0' }).toFile(`./${fileName}`, (error, response) => {
       if (error) {
         mod.reject(error);
       } else {

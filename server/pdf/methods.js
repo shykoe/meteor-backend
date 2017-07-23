@@ -14,26 +14,23 @@ Meteor.methods({
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
 
-	  const fileName = `document_1.pdf`;
     var data = fs.readFileSync("../../../../../server/pdf/template.html", "utf-8");
     const $ = cheerio.load(data);
-    const rep = Reports.findOne({'orderId':req.documentId});
-    const order = Orders.findOne({'_id':req.documentId});
+    const rep = Reports.findOne({ orderId: req.documentId });
+    const order = Orders.findOne({ _id: req.documentId });
     //deal data
     //console.log(req.documentId, rep)
-    if(order){
+    if (order) {
     	const items = order.items;
     	const table = $("#Items tbody");
-			for(var i=0; i<items.length; i++){
-			  if(items[i].requirements){
-			  	var verdict = items[i].requirements.verdict ? "通过":"未通过";
-			    const content = "<tr><td >" + i + "</td><td>" + items[i].name + "</td> <td>" + verdict + "</td></tr>";
-			    table.append(content);
-			  }
+			for (var i = 0; i < items.length; i++) {
+		  	var verdict = items[i].verdict ? "通过" : "未通过";
+		    const content = "<tr><td>" + i + "</td><td>" + items[i].name + "</td><td>" + verdict + "</td></tr>";
+		    table.append(content);
     	}
     }
 
-    if(rep){
+    if (rep) {
 			const ContactAddress_zipcode = $("#ContactAddress_zipcode");
 			ContactAddress_zipcode.append(rep.zipcode);
 			const phone = $("#phone");
@@ -99,7 +96,8 @@ Meteor.methods({
 			Remark.append(rep.Remark);
 		}
 
-    const base64 = generateComponentAsPDF( $.html() , fileName);
+    const fileName = `report_${order.reportNo}.pdf`;
+    const base64 = generateComponentAsPDF($.html(), fileName);
     return base64;
 	}
 })
