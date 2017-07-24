@@ -181,11 +181,10 @@ Meteor.methods({
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
-    const { categoryName, levelName, items, agentMsg, status, price, ShippingInfo } = data;
-    const rel = Orders.update({
-      _id: id,
-      agentId: currentUser._id
-    }, {
+    const { categoryName, levelName, items, agentMsg, status, price, ShippingInfo,
+            activeCustServReply } = data;
+
+    const updateObj = {
       $set: {
         categoryName,
         levelName,
@@ -195,7 +194,32 @@ Meteor.methods({
         price,
         ShippingInfo
       }
-    });
+    };
+
+    if (activeCustServReply) {
+      const order = Orders.findOne({
+        _id: id,
+        agentId: currentUser._id
+      });
+
+      if (order && order.activeCustServRequest) {
+        updateObj.$set.activeCustServRequest = null;
+        updateObj.$push = {
+          custServHistory: {
+            $each: [{
+              request: order.activeCustServRequest,
+              reply: activeCustServReply
+            }],
+            $position: 0
+          }
+        };
+      }
+    }
+
+    const rel = Orders.update({
+      _id: id,
+      agentId: currentUser._id
+    }, updateObj);
 
     if(rel === 0){
       return Promise.reject('data error');
