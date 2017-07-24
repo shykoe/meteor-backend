@@ -45,8 +45,11 @@ Meteor.methods({
 
 		data.reportNo = padNum(num);
 		const rel = Reports.upsert({ orderId }, data);
-		if(rel) {
-			Orders.update({ _id: orderId }, { $set: { status: Consts.ORDER_STATUS_TESTED } });
+		if (rel.insertedId) {
+			Orders.update({ _id: orderId }, { $set: {
+        status: Consts.ORDER_STATUS_TESTED,
+        testedAt: new Date() / 1
+      } });
 		}
 	}
 })

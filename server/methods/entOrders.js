@@ -196,6 +196,12 @@ Meteor.methods({
       }
     };
 
+    if (status === Consts.ORDER_STATUS_APPROVED) {
+      updateObj.$set.approvedAt = new Date() / 1;
+    } else if (status === Consts.ORDER_STATUS_REJECTED) {
+      updateObj.$set.rejectedAt = new Date() / 1;
+    }
+
     if (activeCustServReply) {
       const order = Orders.findOne({
         _id: id,
@@ -336,6 +342,9 @@ Meteor.methods({
     const setObj = {};
     if (status) {
       setObj.status = status;
+      if (status === Consts.ORDER_STATUS_SAMPLE_RECEIVED) {
+        setObj.sampleReceivedAt = new Date() / 1;
+      }
     }
     if (keeperMsg) {
       setObj.keeperMsg = keeperMsg;
