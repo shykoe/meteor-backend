@@ -181,8 +181,8 @@ Meteor.methods({
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role === Consts.USER_ROLE_AGENT)) { return { errors: '用户权限不足' }; }
 
-    const { categoryName, levelName, items, agentMsg, status, price, ShippingInfo,
-            activeCustServReply } = data;
+    const { categoryName, levelName, items, agentMsg, status, reportNo, price, ShippingInfo,
+            rejectionReason, activeCustServReply } = data;
 
     const updateObj = {
       $set: {
@@ -200,6 +200,13 @@ Meteor.methods({
       updateObj.$set.approvedAt = new Date() / 1;
     } else if (status === Consts.ORDER_STATUS_REJECTED) {
       updateObj.$set.rejectedAt = new Date() / 1;
+      if (rejectionReason) {
+        updateObj.$set.rejectionReason = rejectionReason;
+      }
+    } else if (status >= Consts.ORDER_STATUS_PROCESSED && status <= Consts.ORDER_STATUS_COMPLETED) {
+      if (reportNo) {
+        updateObj.$set.reportNo = reportNo;
+      }
     }
 
     if (activeCustServReply) {
