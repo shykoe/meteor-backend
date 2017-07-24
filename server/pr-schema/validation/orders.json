@@ -9,6 +9,8 @@
     "rejectedAt": { "type": "integer" },
     "paidAt": { "type": "integer" },
     "refundedAt": { "type": "integer" },
+    "sampleReceivedAt": { "type": "integer" },
+    "testedAt": { "type": "integer" },
     "sampleName": { "type": "string" },
     "sampleProducer": { "type": "string" },
     "producerBatch": { "type": "string" },
@@ -52,6 +54,7 @@
         "required": [ "name" ]
       }
     },
+    "rejectionReason": { "type": "string" },
     "activeCustServRequest": { "type": "string" },
     "custServHistory": {
       "type": "array",
