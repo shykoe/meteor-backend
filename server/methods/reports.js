@@ -29,7 +29,7 @@ Meteor.methods({
 
 		return Reports.findOne({ orderId });
 	},
-	'reports.upsert': (data, orderId, username)=>{
+	'reports.upsert': (data, orderId, username) => {
     const currentUser = Meteor.user();
     if (!currentUser) { return { errors: '用户未登录' }; }
     if (!(currentUser.role < Consts.USER_ROLE_NORMAL)) { return { errors: '用户权限不足' }; }
@@ -55,5 +55,9 @@ Meteor.methods({
         testedAt: new Date() / 1
       } });
 		}
-	}
+	},
+  'reports.get': (reportNo) => {
+    const report = Reports.findOne({ reportNo });
+    return report;
+  }
 })
