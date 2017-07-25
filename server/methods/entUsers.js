@@ -70,7 +70,7 @@ Meteor.methods({
 
     const res = schemaValidate('userSchema', user);
     if (res) {
-      return null;
+      return { errors: '数据格式错误' };
     }
 
     const userId = Accounts.createUser(user);

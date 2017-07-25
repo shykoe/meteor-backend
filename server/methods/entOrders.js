@@ -153,7 +153,7 @@ Meteor.methods({
       }
     });
 
-    return Promise.resolve('ok');
+    return {};
   },
 
   'agent.order.unpick': (id) => {
@@ -171,7 +171,7 @@ Meteor.methods({
       }
     });
 
-    return Promise.resolve('ok');
+    return {};
   },
 
   //agent approved the order
@@ -235,7 +235,7 @@ Meteor.methods({
     }, updateObj);
 
     if(rel === 0){
-      return Promise.reject('data error');
+      return { errors: '数据错误' };
     }
 
     return enhanceOrders([Orders.findOne({
@@ -284,7 +284,7 @@ Meteor.methods({
     updateTesterOps(data, ops, currentUser._id);
 
     if(rel === 0){
-      return Promise.reject('data error');
+      return { errors: '数据错误' };
     }
 
     return enhanceOrders([Orders.findOne({ _id: id })])[0];
@@ -298,9 +298,10 @@ Meteor.methods({
 
     const rel = Orders.update({ _id: id }, { $push: { testingImages: data } });
     if(rel === 0){
-      return Promise.reject('data error');
+      return { errors: '数据错误' };
     }
-    return Promise.resolve();
+
+    return {};
   },
 
   'keeper.img.update': (id, data) => {
@@ -315,9 +316,10 @@ Meteor.methods({
       }
     });
     if(rel === 0){
-      return Promise.reject('data error');
+      return { errors: '数据错误' };
     }
-    return Promise.resolve();
+
+    return {};
   },
 
   // find all orders
