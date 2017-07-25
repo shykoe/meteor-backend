@@ -37,6 +37,8 @@ Meteor.methods({
 		// Find report by orderId upsert
 		data.userId = currentUser._id;
 		data.orderId = orderId;
+
+    /*
 		var num = Meta.findAndModify({
 			query: { name: "reportNo" },
 			update: { $inc: { value: 1 } },
@@ -44,6 +46,8 @@ Meteor.methods({
 		}).value;
 
 		data.reportNo = padNum(num);
+    */
+
 		const rel = Reports.upsert({ orderId }, data);
 		if (rel.insertedId) {
 			Orders.update({ _id: orderId }, { $set: {
